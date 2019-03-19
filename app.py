@@ -86,8 +86,15 @@ def addTask():
         taskId = 1
     else:
         taskId = tasks[len(tasks) - 1].id + 1
-    tasks.append(Task(taskId, requestBody["task"]["name"], requestBody["task"]["state"]))
-    return Response(status=200)
+
+    task = Task(taskId, requestBody["task"]["name"], requestBody["task"]["state"])
+    tasks.append(task)
+
+    taskSearizable = json.dumps(task.__dict__)
+
+    return Response(taskSearizable,
+                    status=200,
+                    mimetype='application/json')
 
 @app.route('/todo/task/<taskId>', methods=['PUT'])
 def editTask(taskId):
